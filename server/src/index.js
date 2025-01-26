@@ -4,10 +4,12 @@ import databaseConnection from "./config/databaseConnection.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { app, express, server } from "./config/socket.js";
-
-const __dirname = path.resolve();
-
 dotenv.config();
+
+// ES Module alternative to __dirname
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 if (!process.env.PORT) {
   throw new Error("PORT is not defined in the environment variables");
@@ -33,9 +35,10 @@ app.use("/api/user", userRouter);
 app.use("/api/message", messageRouter);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client/dist")));
+  app.use(express.static(path.join(__dirname, "../client/dist")));
+
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
   });
 }
 

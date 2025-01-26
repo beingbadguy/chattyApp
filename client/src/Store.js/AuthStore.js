@@ -2,6 +2,7 @@ import { create } from "zustand";
 import axiosInstance from "../axiosInstance";
 import { io } from "socket.io-client";
 
+// const BASE_URL = "https://chattyapp-gy71.onrender.com";
 const BASE_URL = "http://localhost:3000";
 
 export const useAuthStore = create((set, get) => ({

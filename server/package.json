@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "chatty": "file:.."
+  },
+  "type": "module"
+}
