@@ -43,7 +43,7 @@ const ChatContainer = () => {
             </div>
             <div
               id="chatContainer"
-              className="min-h-[400px] h-[610px]   md:min-h-[490px] lg:min-h-[550px] max-h-[560px] overflow-y-scroll mb-2"
+              className="min-h-[600px] h-[600px]   md:min-h-[490px] lg:min-h-[550px] max-h-[560px] overflow-y-scroll mb-2"
             >
               {message?.length > 0 ? (
                 message.map((msg) => (
@@ -72,7 +72,7 @@ const ChatContainer = () => {
                 </div>
               )}
             </div>
-            <div className="flex items-center justify-center bg-gray-100 mb-1 py-4 gap-4">
+            <div className="flex items-center justify-center bg-gray-100 mb-1 py-4 gap-4 fixed w-full">
               <input
                 type="text"
                 value={text}

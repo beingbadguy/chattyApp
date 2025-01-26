@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthStore } from "../Store.js/AuthStore";
 import { useNavigate } from "react-router-dom";
 import ChatContainer from "./ChatContainer";
+import { RiMessage3Fill } from "react-icons/ri";
 
 const UserPage = () => {
   const {
@@ -56,9 +57,11 @@ const UserPage = () => {
         <div
           className={` bg-gray-100 h-[700px] ${
             selectedUser != null ? "hidden md:flex" : "w-full"
-          }  md:w-[20%] flex flex-col justify-between`}
+          } md:w-[20%] flex flex-col justify-between`}
         >
-          <div className={`${selectedUser != null ? "hidden md:block" : "w-full"}`}>
+          <div
+            className={`${selectedUser != null ? "hidden md:block" : "w-full"}`}
+          >
             {allUsers &&
               allUsers.map((user) => (
                 <div
@@ -75,12 +78,19 @@ const UserPage = () => {
                       } size-2 rounded-full absolute top-1 right-0`}
                     ></div>
                   </div>
-                  {user?.name}
+                  <p className="flex  items-center gap-1 justify-between w-full md:w-[80%] lg:w-[80%] bg-red-100 ">
+                    {user?.name}
+                    <RiMessage3Fill className="size-5" />
+                  </p>
                 </div>
               ))}
           </div>
         </div>
-        <div className={`${selectedUser != null ? "w-full" : "hidden md:block md:w-full"}`}>
+        <div
+          className={`${
+            selectedUser != null ? "w-full" : "hidden md:block md:w-full"
+          }`}
+        >
           <ChatContainer />
         </div>
       </div>
