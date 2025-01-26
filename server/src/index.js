@@ -6,10 +6,8 @@ import cookieParser from "cookie-parser";
 import { app, express, server } from "./config/socket.js";
 dotenv.config();
 
-// ES Module alternative to __dirname
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const port = process.env.PORT || 8080;
+const __dirname = path.resolve();
 
 if (!process.env.PORT) {
   throw new Error("PORT is not defined in the environment variables");
@@ -23,8 +21,6 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
-
-const port = process.env.PORT || 8080;
 
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
