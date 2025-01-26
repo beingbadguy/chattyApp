@@ -3,6 +3,7 @@
     "bcrypt": "^5.1.1",
     "chatty": "file:..",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "crossenv": "^0.0.2-security",
     "dotenv": "^16.4.7",
