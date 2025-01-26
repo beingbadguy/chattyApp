@@ -1,0 +1,20 @@
+config the db
+
+- login
+- signup
+- logout
+
+# After that refine that usemodel by using the
+
+- resetpassword
+- verifypassword
+
+# Create frontend
+
+- use zustand
+- axios Instance
+
+# Now work on the socketIo
+
+IDPass for mongodb
+codewithamankumar = s2uRR5yBcRKwC8pz
