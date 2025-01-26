@@ -39,10 +39,10 @@ const ChatContainer = () => {
                 <img
                   src={
                     selectedUser?.profilePic ||
-                    "https://img.icons8.com/?size=100&id=2yC9SZKcXDdX&format=png&color=000000"
+                    "https://img.icons8.com/?size=100&id=7820&format=png&color=000000"
                   }
                   alt="logo"
-                  className="size-10 object-cover bg-black rounded-full relative"
+                  className="size-10 object-cover border border-black  rounded-full relative"
                 />
                 <div
                   className={`${
@@ -92,11 +92,15 @@ const ChatContainer = () => {
                         <img
                           src={
                             msg.senderId === authUser?._id
-                              ? authUser?.profilePic
-                              : `${selectedUser?.profilePic} `
+                              ? authUser?.profilePic ||
+                                "https://img.icons8.com/?size=100&id=7820&format=png&color=000000"
+                              : `${
+                                  selectedUser?.profilePic ||
+                                  "https://img.icons8.com/?size=100&id=7820&format=png&color=000000"
+                                } `
                           }
                           alt=""
-                          className="object-contain border border-black size-10 rounded-full"
+                          className="object-cover border border-black size-10 rounded-full"
                         />
                       </div>
                     </div>

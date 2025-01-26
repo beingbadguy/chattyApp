@@ -57,7 +57,7 @@ const UserPage = () => {
         <div
           className={` bg-gray-100 h-[700px] ${
             selectedUser != null ? "hidden md:flex" : "w-full"
-          } md:w-[20%] flex flex-col justify-between`}
+          } md:w-[30%] lg:w-[20%] flex flex-col justify-between`}
         >
           <div
             className={`${selectedUser != null ? "hidden md:block" : "w-full"}`}
@@ -75,7 +75,7 @@ const UserPage = () => {
                     <img
                       src={
                         user?.profilePic ||
-                        "https://img.icons8.com/?size=100&id=2yC9SZKcXDdX&format=png&color=000000"
+                        "https://img.icons8.com/?size=100&id=7820&format=png&color=000000"
                       }
                       alt={user?.name}
                       className="object-cover w-10 h-10 rounded-full border-black border"
@@ -87,14 +87,14 @@ const UserPage = () => {
                     ></div>
                   </div>
 
-                  <p className="flex  items-center gap-1 justify-between w-full md:w-[80%] lg:w-[80%]  ">
+                  <div className="flex  items-center gap-1 justify-between w-full md:w-[80%] lg:w-[80%]  ">
                     {user?.name}
                     <RiMessage3Fill
                       className={`${
-                        onlineUsers.includes(user?._id) ? "text-green-500" : ""
-                      } size-5 `}
+                        onlineUsers.includes(user?._id) ? "text-green-500" : " "
+                      } size-5 block `}
                     />
-                  </p>
+                  </div>
                 </div>
               ))}
           </div>
