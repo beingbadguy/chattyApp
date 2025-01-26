@@ -16,6 +16,11 @@ export const useAuthStore = create((set, get) => ({
   allUsers: [],
   selectedUser: null,
   message: [],
+  bgcolor: localStorage.getItem("bgcolor") || "#2dc653", // Initialize with saved color or default
+  changeBg: (color) => {
+    set({ bgcolor: color });
+    localStorage.setItem("bgcolor", color); // Save the new color
+  },
 
   login: async (data, navigate) => {
     try {
@@ -59,7 +64,7 @@ export const useAuthStore = create((set, get) => ({
     set({ authUser: null });
     set({ socket: null });
     set({ allUsers: [] });
-    navigate("/");
+    
   },
   checkAuth: async () => {
     try {

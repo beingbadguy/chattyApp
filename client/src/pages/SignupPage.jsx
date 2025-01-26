@@ -12,6 +12,7 @@ const SignupPage = () => {
     checkAuth,
     isAuthChecking,
     getAllUsers,
+    bgcolor
   } = useAuthStore();
   console.log(authUser);
   const [userData, setUserData] = useState({
@@ -62,7 +63,7 @@ const SignupPage = () => {
       <div className="flex items-center justify-center gap-1 w-full">
         {/* left  */}
         <div className="flex items-center justify-center flex-col h-full w-full   border-t-0 border ">
-          <p className="text-xl my-4 font-bold text-green-500">Signup</p>
+          <p className={`text-xl my-4 font-bold text-[${bgcolor}]`}>Signup</p>
           <div className="w-full">
             <form
               onSubmit={(e) => {
@@ -75,7 +76,7 @@ const SignupPage = () => {
                 name="name"
                 value={userData.name}
                 placeholder="Name"
-                className="border p-2 w-[80%] md:w-[70%] rounded outline-green-500"
+                className={`border p-2 w-[80%] md:w-[70%] rounded outline-[${bgcolor}]`}
                 onChange={handleChange}
               />
               <input
@@ -83,7 +84,7 @@ const SignupPage = () => {
                 name="email"
                 value={userData.email}
                 placeholder="Email"
-                className="border p-2 my-4 w-[80%] md:w-[70%] rounded outline-green-500"
+                className={`border p-2 my-4 w-[80%] md:w-[70%] rounded outline-[${bgcolor}]`}
                 onChange={handleChange}
               />
               <input
@@ -91,11 +92,13 @@ const SignupPage = () => {
                 name="password"
                 value={userData.password}
                 placeholder="password"
-                className="border p-2  w-[80%] md:w-[70%] rounded outline-green-500"
+                className={`border p-2  w-[80%] md:w-[70%] rounded outline-[${bgcolor}]`}
                 onChange={handleChange}
               />
 
-              <button className="p-2 mt-4 bg-green-500  text-white w-[80%] md:w-[70%] rounded">
+              <button
+                className={`p-2 mt-4 bg-[${bgcolor}]  text-white w-[80%] md:w-[70%] rounded`}
+              >
                 {isSigningUp ? (
                   <div className="flex items-center justify-center animate-spin">
                     <RiLoader5Fill />
@@ -128,9 +131,9 @@ const SignupPage = () => {
                 key={Math.random()}
                 className={` ${
                   i % 2 != 0
-                    ? "bg-[#2dc653] transition-all duration-300 animate-pulse"
+                    ? `bg-[${bgcolor}] transition-all duration-300 animate-pulse`
                     : ""
-                } size-20 bg-[#2dc653]`}
+                } size-20 bg-[${bgcolor}]`}
               ></p>
             ))}
           </div>
