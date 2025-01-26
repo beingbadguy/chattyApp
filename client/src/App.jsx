@@ -59,8 +59,8 @@ const App = () => {
     <div className="flex min-h-screen w-full">
       <div className="flex items-center justify-center gap-1 w-full">
         {/* left  */}
-        <div className="flex items-center justify-center flex-col h-full w-full  bg-[#FFC914]">
-          <p className="text-xl my-4 font-bold">Login</p>
+        <div className="flex items-center justify-center flex-col h-full w-full   border-t-0 border">
+          <p className="text-xl my-4 font-bold text-green-500">Login</p>
           <div className="w-full">
             <form
               onSubmit={(e) => {
@@ -73,7 +73,7 @@ const App = () => {
                 name="email"
                 value={userData.email}
                 placeholder="Email"
-                className="border p-2 my-4 w-[70%] rounded"
+                className="border p-2 my-4 w-[80%] md:w-[70%] rounded outline-green-500"
                 onChange={handleChange}
               />
               <input
@@ -81,11 +81,11 @@ const App = () => {
                 name="password"
                 value={userData.password}
                 placeholder="password"
-                className="border p-2  w-[70%] rounded"
+                className="border p-2  w-[80%] md:w-[70%] rounded outline-green-500"
                 onChange={handleChange}
               />
 
-              <button className="p-2 mt-4 bg-black text-white w-[70%] rounded">
+              <button className="p-2 mt-4 bg-green-500 text-white w-[80%] md:w-[70%] rounded">
                 {isLoggingIn ? (
                   <div className="flex items-center justify-center animate-spin">
                     <RiLoader5Fill />
@@ -118,9 +118,9 @@ const App = () => {
                 key={Math.random()}
                 className={` ${
                   i % 2 != 0
-                    ? "bg-[#FFC914] transition-all duration-300 animate-pulse"
+                    ? "bg-[#2dc653] transition-all duration-300 animate-pulse"
                     : ""
-                } size-20 bg-[#FFC914]`}
+                } size-20 bg-[#2dc653]`}
               ></p>
             ))}
           </div>

@@ -65,7 +65,7 @@ const UserPage = () => {
                   key={user?._id}
                   className={`${
                     selectedUser?._id === user?._id ? "bg-gray-200" : ""
-                  } flex items-center gap-2 px-4 hover:bg-gray-200 p-2 cursor-pointer`}
+                  } flex items-center gap-2  hover:bg-gray-200 p-2 cursor-pointer`}
                   onClick={() => handleUserClick(user)}
                 >
                   <div className="size-10 bg-black rounded-full relative">

@@ -58,7 +58,7 @@ const ChatContainer = () => {
                     <p
                       className={`${
                         msg.senderId === authUser._id
-                          ? "bg-blue-400 text-white"
+                          ? "bg-green-500 text-white"
                           : "bg-gray-300 text-black"
                       } w-auto max-w-xs lg:max-w-sm px-4 py-2 rounded-lg `}
                     >
@@ -82,7 +82,7 @@ const ChatContainer = () => {
                 }}
               />
               <button
-                className="bg-blue-400 p-2 rounded flex items-center justify-center gap-2 text-white"
+                className="bg-green-400 hover:bg-green-500 transition-all duration-200 p-2 rounded flex items-center justify-center gap-2 text-white"
                 onClick={() => {
                   if (text) {
                     sendMessage(text);
@@ -103,9 +103,9 @@ const ChatContainer = () => {
                   key={Math.random()}
                   className={`${
                     i % 2 !== 0
-                      ? "bg-[#FFC914] transition-all duration-300 animate-pulse"
+                      ? "bg-[#2dc653] transition-all duration-300 animate-pulse"
                       : ""
-                  } size-20 bg-[#FFC914]`}
+                  } size-20 bg-[#2dc653]`}
                 ></p>
               ))}
             </div>

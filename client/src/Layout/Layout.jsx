@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useAuthStore } from "../Store.js/AuthStore";
+import { BsChatHeart } from "react-icons/bs";
+import { SiImessage } from "react-icons/si";
 
 const Layout = () => {
   const { authUser, checkAuth } = useAuthStore();
@@ -10,8 +12,9 @@ const Layout = () => {
   // }, []);
   return (
     <div>
-      <nav className="p-2 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-yellow-500 animate-pulse">
+      <nav className="p-2 flex justify-between items-center shadow-sm">
+        <h1 className="text-2xl font-bold text-green-500  animate-pulse flex gap-2 items-center ">
+          <SiImessage />
           Chatty
         </h1>
         <ul className="flex items-center gap-8">
