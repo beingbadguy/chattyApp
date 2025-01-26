@@ -2,5 +2,9 @@
   "dependencies": {
     "chatty": "file:.."
   },
-  "type": "module"
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  }
 }
