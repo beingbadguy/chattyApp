@@ -1,9 +1,9 @@
 * {
-  font-family: "Satoshi", sans-serif;
-  font-family: "General Sans", sans-serif;
-  font-family: "Bespoke Sans", sans-serif;
-  font-family: "RX100", sans-serif;
-  user-select: none;
+  font-family: 'Satoshi', sans-serif;
+font-family: 'General Sans', sans-serif;
+/* font-family: 'Bespoke Sans', sans-serif; */
+/* font-family: 'RX100', sans-serif; */
+/* font-family: 'Ranade', sans-serif; */
 }
 body{
   overflow: hidden;

@@ -1,9 +1,12 @@
 import dotenv from "dotenv";
 import path from "path";
 import databaseConnection from "./config/databaseConnection.js";
+import cloudinaryConnection from "./config/cloudinaryConnection.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { app, express, server } from "./config/socket.js";
+import fileUpload from "express-fileupload";
+
 dotenv.config();
 
 const port = process.env.PORT || 8080;
@@ -22,6 +25,13 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
+
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
 import messageRouter from "./routes/message.route.js";
@@ -39,5 +49,7 @@ if (process.env.NODE_ENV === "production") {
 
 server.listen(port, () => {
   databaseConnection();
+  cloudinaryConnection();
+
   console.log(`Server running on port ${port}`);
 });

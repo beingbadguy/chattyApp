@@ -16,6 +16,9 @@ export const useAuthStore = create((set, get) => ({
   allUsers: [],
   selectedUser: null,
   message: [],
+  isProfileUpdating: false,
+  isUserTyping: false,
+
   bgcolor: localStorage.getItem("bgcolor") || "#2dc653", // Initialize with saved color or default
   changeBg: (color) => {
     set({ bgcolor: color });
@@ -64,7 +67,6 @@ export const useAuthStore = create((set, get) => ({
     set({ authUser: null });
     set({ socket: null });
     set({ allUsers: [] });
-    
   },
   checkAuth: async () => {
     try {
@@ -183,5 +185,26 @@ export const useAuthStore = create((set, get) => ({
       socket.off("newMessage", handleNewMessage);
       console.log("Unsubscribed from newMessage.");
     };
+  },
+
+  uploadProfilePic: async (profilePic) => {
+    try {
+      set({ isProfileUpdating: true });
+      const formData = new FormData();
+      formData.append("profilePic", profilePic);
+      const res = await axiosInstance.put("/api/user/user", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(res.data);
+      // get().authUser.profilePic = res.data.data.profilePic;
+      set({ authUser: res.data.data });
+      set({ isProfileUpdating: false });
+    } catch (error) {
+      console.log(error.message);
+      console.log(error?.response?.data);
+      set({ isProfileUpdating: false });
+    }
   },
 }));

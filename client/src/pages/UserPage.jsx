@@ -71,13 +71,22 @@ const UserPage = () => {
                   } flex items-center gap-2  hover:bg-gray-200 p-2 cursor-pointer`}
                   onClick={() => handleUserClick(user)}
                 >
-                  <div className="size-10 bg-black rounded-full relative">
+                  <div className="relative">
+                    <img
+                      src={
+                        user?.profilePic ||
+                        "https://img.icons8.com/?size=100&id=2yC9SZKcXDdX&format=png&color=000000"
+                      }
+                      alt={user?.name}
+                      className="object-cover w-10 h-10 rounded-full border-black border"
+                    />
                     <div
                       className={`${
                         onlineUsers.includes(user?._id) ? "bg-green-500" : ""
                       } size-2 rounded-full absolute top-1 right-0`}
                     ></div>
                   </div>
+
                   <p className="flex  items-center gap-1 justify-between w-full md:w-[80%] lg:w-[80%]  ">
                     {user?.name}
                     <RiMessage3Fill

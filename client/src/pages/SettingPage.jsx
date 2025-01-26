@@ -33,6 +33,7 @@ const SettingPage = () => {
     "#FFC107",
     "#FF9800",
     "#FF5722",
+    "#84a98c",
   ];
 
   useEffect(() => {
@@ -60,9 +61,7 @@ const SettingPage = () => {
             onClick={() => {
               changeBg(clr);
             }}
-          >
-            {clr}
-          </div>
+          >{clr}</div>
         ))}
       </div>
     </div>

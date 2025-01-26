@@ -25,7 +25,7 @@ const Layout = () => {
           <SiImessage />
           Chatty
         </h1>
-        <ul className="flex items-center gap-8">
+        <ul className="flex items-center gap-2 text-white">
           {/* <li>
             <a href="/home">Home</a>
           </li>
@@ -35,15 +35,7 @@ const Layout = () => {
           <li>
             <a href="/contact">Contact</a>
           </li> */}
-          <li>
-            <Link
-              to="/setting"
-              className={`flex items-center justify-center gap-1 p-2 rounded bg-[${bgcolor}]`}
-            >
-              <p className="hidden md:block">Setting </p>
-              <CiSettings className="text-lg" />
-            </Link>
-          </li>
+
           {authUser ? (
             <ul className="flex gap-4 items-center justify-center">
               <li>
@@ -59,6 +51,15 @@ const Layout = () => {
           ) : (
             ""
           )}
+          <li>
+            <Link
+              to="/setting"
+              className={`flex items-center justify-center gap-1 p-2 rounded bg-[${bgcolor}]`}
+            >
+              <p className="hidden md:block">Setting </p>
+              <CiSettings className="text-lg" />
+            </Link>
+          </li>
         </ul>
       </nav>
       <div>

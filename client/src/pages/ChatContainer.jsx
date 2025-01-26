@@ -35,15 +35,24 @@ const ChatContainer = () => {
                   selectUser(null);
                 }}
               />
-              <div className="size-10 bg-black rounded-full relative">
+              <div className="relative">
+                <img
+                  src={
+                    selectedUser?.profilePic ||
+                    "https://img.icons8.com/?size=100&id=2yC9SZKcXDdX&format=png&color=000000"
+                  }
+                  alt="logo"
+                  className="size-10 object-cover bg-black rounded-full relative"
+                />
                 <div
                   className={`${
-                    selectedUser && onlineUsers.includes(selectedUser._id)
+                    selectedUser && onlineUsers.includes(selectedUser?._id)
                       ? "bg-green-500"
                       : "bg-red-400"
                   } size-2 rounded-full absolute top-1 right-0`}
                 ></div>
               </div>
+
               {selectedUser?.name}
             </div>
             <div
@@ -53,26 +62,43 @@ const ChatContainer = () => {
               {message?.length > 0 ? (
                 message.map((msg) => (
                   <div
-                    key={msg._id}
+                    key={msg?._id}
                     className={`flex  mt-2 ${
-                      msg.senderId === authUser._id
+                      msg.senderId === authUser?._id
                         ? "justify-end"
                         : "justify-start"
                     } mx-2`}
                   >
-                    <div>
-                      <span className="text-gray-500 text-xs ml-2">
-                        {formatCreatedAt(msg.createdAt)} ago
-                      </span>
-                      <p
-                        className={`${
-                          msg.senderId === authUser._id
-                            ? `bg-[${bgcolor}] text-white`
-                            : "bg-gray-300 text-black"
-                        } w-auto max-w-xs lg:max-w-sm px-4 py-2 rounded-lg `}
-                      >
-                        {msg.text}
-                      </p>
+                    <div
+                      className={` ${
+                        msg.senderId != authUser?._id ? "flex-row-reverse" : ""
+                      } flex gap-1 items-center`}
+                    >
+                      <div>
+                        <span className="text-gray-500 text-xs ml-2">
+                          {formatCreatedAt(msg.createdAt)} ago
+                        </span>
+                        <p
+                          className={`${
+                            msg.senderId === authUser?._id
+                              ? `bg-[${bgcolor}] text-white`
+                              : "bg-gray-300 text-black"
+                          } w-auto max-w-xs lg:max-w-sm px-4 py-2 rounded-lg mb-2`}
+                        >
+                          {msg.text}
+                        </p>
+                      </div>
+                      <div>
+                        <img
+                          src={
+                            msg.senderId === authUser?._id
+                              ? authUser?.profilePic
+                              : `${selectedUser?.profilePic} `
+                          }
+                          alt=""
+                          className="object-contain border border-black size-10 rounded-full"
+                        />
+                      </div>
                     </div>
                   </div>
                 ))
@@ -90,6 +116,12 @@ const ChatContainer = () => {
                 onChange={(e) => {
                   setTextData(e.target.value);
                 }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && text) {
+                    sendMessage(text);
+                    setTextData("");
+                  }
+                }}
               />
               <button
                 className={` bg-[${bgcolor}] hover:bg-[${bgcolor}] transition-all duration-200 p-2 rounded flex items-center justify-center gap-2 text-white`}
@@ -97,6 +129,14 @@ const ChatContainer = () => {
                   if (text) {
                     sendMessage(text);
                     setTextData("");
+                  }
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    if (text) {
+                      sendMessage(text);
+                      setTextData("");
+                    }
                   }
                 }}
               >
