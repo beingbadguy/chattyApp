@@ -43,7 +43,7 @@ const ChatContainer = () => {
             </div>
             <div
               id="chatContainer"
-              className="min-h-[400px] h-[400px]   md:min-h-[490px] lg:min-h-[550px] max-h-[560px] overflow-y-scroll mb-2"
+              className="min-h-[400px] h-[570px]   md:min-h-[490px] lg:min-h-[550px] max-h-[560px] overflow-y-scroll mb-2"
             >
               {message?.length > 0 ? (
                 message.map((msg) => (
