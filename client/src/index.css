@@ -5,3 +5,6 @@
   font-family: "RX100", sans-serif;
   user-select: none;
 }
+body{
+  overflow: hidden;
+}

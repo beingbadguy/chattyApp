@@ -78,9 +78,13 @@ const UserPage = () => {
                       } size-2 rounded-full absolute top-1 right-0`}
                     ></div>
                   </div>
-                  <p className="flex  items-center gap-1 justify-between w-full md:w-[80%] lg:w-[80%] bg-red-100 ">
+                  <p className="flex  items-center gap-1 justify-between w-full md:w-[80%] lg:w-[80%]  ">
                     {user?.name}
-                    <RiMessage3Fill className="size-5" />
+                    <RiMessage3Fill
+                      className={`${
+                        onlineUsers.includes(user?._id) ? "text-green-500" : ""
+                      } size-5 `}
+                    />
                   </p>
                 </div>
               ))}

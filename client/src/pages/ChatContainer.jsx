@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuthStore } from "../Store.js/AuthStore";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { BsSend } from "react-icons/bs";
+import { formatDistanceToNowStrict } from "date-fns";
 
 const ChatContainer = () => {
   const {
@@ -17,6 +18,9 @@ const ChatContainer = () => {
   } = useAuthStore();
 
   const [text, setTextData] = useState("");
+  const formatCreatedAt = (createdAt) => {
+    return formatDistanceToNowStrict(new Date(createdAt)); // Use date-fns
+  };
 
   return (
     <div>
@@ -43,27 +47,32 @@ const ChatContainer = () => {
             </div>
             <div
               id="chatContainer"
-              className="min-h-[600px] h-[600px]   md:min-h-[490px] lg:min-h-[550px] max-h-[560px] overflow-y-scroll mb-2"
+              className="min-h-[500px] max-h-[600px]    md:min-h-[490px] lg:min-h-[500px] lg:h-[570px] overflow-y-scroll "
             >
               {message?.length > 0 ? (
                 message.map((msg) => (
                   <div
                     key={msg._id}
-                    className={`flex mt-2 ${
+                    className={`flex  mt-2 ${
                       msg.senderId === authUser._id
                         ? "justify-end"
                         : "justify-start"
                     } mx-2`}
                   >
-                    <p
-                      className={`${
-                        msg.senderId === authUser._id
-                          ? "bg-green-500 text-white"
-                          : "bg-gray-300 text-black"
-                      } w-auto max-w-xs lg:max-w-sm px-4 py-2 rounded-lg `}
-                    >
-                      {msg.text}
-                    </p>
+                    <div>
+                      <span className="text-gray-500 text-xs ml-2">
+                        {formatCreatedAt(msg.createdAt)} ago
+                      </span>
+                      <p
+                        className={`${
+                          msg.senderId === authUser._id
+                            ? "bg-green-500 text-white"
+                            : "bg-gray-300 text-black"
+                        } w-auto max-w-xs lg:max-w-sm px-4 py-2 rounded-lg `}
+                      >
+                        {msg.text}
+                      </p>
+                    </div>
                   </div>
                 ))
               ) : (
