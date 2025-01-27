@@ -18,6 +18,7 @@ export const useAuthStore = create((set, get) => ({
   message: [],
   isProfileUpdating: false,
   isUserTyping: false,
+  typingTimeout: null,
 
   bgcolor: localStorage.getItem("bgcolor") || "#2dc653", // Initialize with saved color or default
   changeBg: (color) => {
@@ -29,7 +30,6 @@ export const useAuthStore = create((set, get) => ({
     try {
       set({ isLoggingIn: true });
       const res = await axiosInstance.post("/api/auth/login", data);
-      console.log(res.data);
       get().getAllUsers();
       set({ isLoggingIn: false, authUser: res.data.data, AnyError: null });
       get().connectSocket();
@@ -46,7 +46,6 @@ export const useAuthStore = create((set, get) => ({
     try {
       set({ isSigningUp: true });
       const res = await axiosInstance.post("/api/auth/signup", data);
-      console.log(res.data);
       get().getAllUsers();
       set({ isSigningUp: false, authUser: res.data.data, AnyError: null });
       get().connectSocket();
@@ -62,7 +61,6 @@ export const useAuthStore = create((set, get) => ({
   },
   logout: async (navigate) => {
     const res = await axiosInstance.post("/api/auth/logout");
-    console.log(res.data);
     get().disconnectSocket();
     set({ authUser: null });
     set({ socket: null });
@@ -73,9 +71,7 @@ export const useAuthStore = create((set, get) => ({
       set({ isAuthChecking: true });
       const res = await axiosInstance.get("/api/auth/verify");
       get().getAllUsers();
-
       get().connectSocket();
-      console.log("checkAuthRan");
       set({ isAuthChecking: false, authUser: res.data.data, AnyError: null });
     } catch (error) {
       console.log(error.response?.data?.message);
@@ -133,7 +129,6 @@ export const useAuthStore = create((set, get) => ({
   getMessages: async (userId) => {
     try {
       const res = await axiosInstance.get(`/api/message/messages/${userId}`);
-      console.log(res.data);
       set({ message: res.data });
     } catch (error) {
       console.log(error.message);
@@ -142,7 +137,7 @@ export const useAuthStore = create((set, get) => ({
   },
 
   subscribeToMessage: () => {
-    const { selectedUser, socket, authUser } = get();
+    const { selectedUser, socket, authUser, isUserTyping } = get();
 
     if (!socket) {
       console.error("Socket instance is not initialized.");
@@ -158,7 +153,8 @@ export const useAuthStore = create((set, get) => ({
     socket.off("newMessage");
 
     const handleNewMessage = (newMessage) => {
-      console.log("Received newMessage:", newMessage);
+      // console.log("Received newMessage:", newMessage);
+      // Update the typing status
 
       // Check if the new message is relevant
       const isMessageRelevant =
@@ -175,15 +171,16 @@ export const useAuthStore = create((set, get) => ({
     // Register new listener
     socket.on("newMessage", handleNewMessage);
 
-    console.log(
-      "Subscribed to newMessage for selected user:",
-      selectedUser?._id
-    );
+    // console.log(
+    //   "Subscribed to newMessage for selected user:",
+    //   selectedUser?._id
+    // );
 
     // Return cleanup function
     return () => {
       socket.off("newMessage", handleNewMessage);
-      console.log("Unsubscribed from newMessage.");
+
+      // console.log("Unsubscribed from newMessage.");
     };
   },
 
@@ -197,7 +194,7 @@ export const useAuthStore = create((set, get) => ({
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(res.data);
+      // console.log(res.data);
       // get().authUser.profilePic = res.data.data.profilePic;
       set({ authUser: res.data.data });
       set({ isProfileUpdating: false });
@@ -207,4 +204,44 @@ export const useAuthStore = create((set, get) => ({
       set({ isProfileUpdating: false });
     }
   },
+
+  // TODO: ADD REAL TIME TYPING STATUS
+
+  startTyping: (receiverId) => {
+    const { authUser, socket } = get();
+    if (!socket || !authUser) return;
+    const data = {
+      senderId: authUser._id,
+      receiverId,
+    };
+    socket.emit("typing", data);
+    // console.log("Started typing for receiver:", receiverId);
+    set({ isTyping: true });
+  },
+
+  stopTyping: (receiverId) => {
+    const { authUser, socket } = get();
+    if (!socket || !authUser) return;
+
+    const data = {
+      senderId: authUser._id,
+      receiverId,
+    };
+
+    socket.emit("stopTyping", data);
+    // console.log("Stopped typing for receiver:", receiverId);
+    set({ isTyping: false });
+  },
+
+  handleTyping: (receiverId) => {
+    const { socket, authUser, startTyping, stopTyping, typingTimeout } = get();
+    if (!socket || !authUser) return;
+    startTyping(receiverId);
+    const timeout = setTimeout(() => {
+      stopTyping(receiverId);
+    }, 3000);
+    console.log(timeout);
+    set({ typingTimeout: timeout });
+  },
+  setIsUserTyping: (typing) => set({ isUserTyping: typing }),
 }));

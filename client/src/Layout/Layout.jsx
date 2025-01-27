@@ -8,10 +8,7 @@ import { FaRegUser, FaUser } from "react-icons/fa6";
 
 const Layout = () => {
   const { authUser, checkAuth, bgcolor } = useAuthStore();
-  // useEffect(() => {
-  //   checkAuth();
-  //   console.log("Layout is now initialized");
-  // }, []);
+
   const navigate = useNavigate();
   return (
     <div>

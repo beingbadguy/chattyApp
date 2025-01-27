@@ -16,6 +16,8 @@ const UserPage = () => {
     message,
     subscribeToMessage,
     unsubscribeFromMessages,
+    isUserTyping,
+    handleTyping,
   } = useAuthStore();
   const navigate = useNavigate();
   const [text, setTextData] = useState("");
@@ -46,11 +48,11 @@ const UserPage = () => {
   }, [selectedUser, subscribeToMessage]);
 
   // Ensure user is selected before trying to fetch messages
+
   const handleUserClick = (user) => {
     selectUser(user);
     getMessages(user._id); // Fetch messages of the selected user
   };
-
   return (
     <div>
       <div className="flex items-start">

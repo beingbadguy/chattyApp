@@ -19,7 +19,6 @@ const App = () => {
     getAllUsers,
     bgcolor,
   } = useAuthStore();
-  // console.log(authUser);
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -50,7 +49,6 @@ const App = () => {
     getAllUsers();
     if (authUser) {
       navigate("/user");
-      console.log("i have changed");
     }
   }, [authUser]);
 

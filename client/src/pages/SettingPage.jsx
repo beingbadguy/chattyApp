@@ -6,7 +6,6 @@ import { IoIosArrowBack, IoMdArrowDropleft } from "react-icons/io";
 const SettingPage = () => {
   const { logout, authUser, checkAuth, changeBg } = useAuthStore();
   const navigate = useNavigate();
-  console.log(authUser);
 
   const bgColors = [
     "#FF6384",

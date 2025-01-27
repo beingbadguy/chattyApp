@@ -19,7 +19,6 @@ const SignupPage = () => {
     getAllUsers,
     bgcolor,
   } = useAuthStore();
-  console.log(authUser);
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -53,7 +52,6 @@ const SignupPage = () => {
 
     if (authUser) {
       navigate("/user");
-      console.log("i have changed");
     }
   }, [authUser]);
 

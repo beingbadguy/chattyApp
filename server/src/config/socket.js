@@ -27,6 +27,21 @@ io.on("connection", (socket) => {
   const onlineUsers = Object.keys(userSocketMap);
   io.emit("getOnlineUsers", onlineUsers);
 
+  // Handle 'typing' event
+  socket.on("typing", (data) => {
+    const { senderId, receiverId } = data;
+    const receiverSocketId = userSocketMap[receiverId];
+    console.log("Receiver socket id: " + receiverSocketId);
+    io.to(receiverSocketId).emit("typing", senderId); // Notify the receiver that the sender is typing
+  });
+
+  // Handle 'stopTyping' event
+  socket.on("stopTyping", (data) => {
+    const { senderId, receiverId } = data;
+    const receiverSocketId = userSocketMap[receiverId];
+    io.to(receiverSocketId).emit("stopTyping", senderId); // Notify the receiver that the sender has stopped typing
+  });
+
   // when user disconnects from server
   socket.on("disconnect", () => {
     console.log("User disconnected", socket.id);

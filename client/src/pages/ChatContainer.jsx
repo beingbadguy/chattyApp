@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "../Store.js/AuthStore";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { BsSend } from "react-icons/bs";
 import { formatDistanceToNowStrict } from "date-fns";
-
+import { TiMessageTyping } from "react-icons/ti";
+import { GiCaterpillar } from "react-icons/gi";
+import { LuMessageCircleDashed } from "react-icons/lu";
 const ChatContainer = () => {
+  const chatContainerRef = useRef(null);
   const {
     authUser,
     onlineUsers,
@@ -16,12 +19,65 @@ const ChatContainer = () => {
     message,
     subscribeToMessage,
     bgcolor,
+    isUserTyping,
+    handleTyping,
+    socket,
+    setIsUserTyping,
   } = useAuthStore();
 
   const [text, setTextData] = useState("");
   const formatCreatedAt = (createdAt) => {
     return formatDistanceToNowStrict(new Date(createdAt)); // Use date-fns
   };
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [message, isUserTyping]);
+
+  useEffect(() => {
+    // Check for socket and selectedUser availability
+    if (!socket || !selectedUser) {
+      console.log("Socket is not initialized or selected user is not set");
+      return;
+    }
+
+    console.log("Socket is initialized in chatContainer");
+
+    // Add socket event listeners
+    socket.on("typing", (senderId) => {
+      // console.log(senderId);
+      // console.log(`${senderId} is typing`);
+      if (senderId === selectedUser._id) {
+        setIsUserTyping(true); // Update state only for the selected user
+      }
+    });
+
+    socket.on("stopTyping", (senderId) => {
+      // console.log(`${senderId} stopped typing`);
+      if (senderId === selectedUser._id) {
+        setIsUserTyping(false); // Update state only for the selected user
+      }
+    });
+
+    // Cleanup socket event listeners on unmount
+    return () => {
+      console.log("Cleaning up socket listeners");
+      socket.off("typing");
+      socket.off("stopTyping");
+    };
+  }, [socket, selectedUser]);
+
+  useEffect(() => {
+    if (selectedUser) {
+      const unsubscribe = subscribeToMessage();
+      return () => {
+        unsubscribe(); // Cleanup on component unmount
+      };
+    }
+  }, [selectedUser, subscribeToMessage]);
 
   return (
     <div>
@@ -57,7 +113,8 @@ const ChatContainer = () => {
             </div>
             <div
               id="chatContainer"
-              className="min-h-[500px] max-h-[600px]    md:min-h-[490px] lg:min-h-[500px] lg:h-[570px] overflow-y-scroll "
+              ref={chatContainerRef}
+              className="min-h-[500px] max-h-[600px]    md:min-h-[490px] lg:min-h-[500px] lg:h-[570px] overflow-y-scroll relative "
             >
               {message?.length > 0 ? (
                 message.map((msg) => (
@@ -111,6 +168,24 @@ const ChatContainer = () => {
                   No messages to display.
                 </div>
               )}
+              {isUserTyping ? (
+                <div className={` flex items-center mx-2`}>
+                  <img
+                    src={
+                      selectedUser?.profilePic ||
+                      "https://img.icons8.com/?size=100&id=7820&format=png&color=000000"
+                    }
+                    alt=""
+                    className="object-cover border border-black size-8 rounded-full"
+                  />
+                  <p className="text-black text-sm  animate-pulse ml-3">
+                    {" "}
+                    {selectedUser?.name} is typing ...
+                  </p>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="flex items-center justify-center bg-gray-100 mb-1 py-4 gap-4 fixed w-full">
               <input
@@ -119,6 +194,7 @@ const ChatContainer = () => {
                 className="border border-gray-400 rounded w-[50%] p-2 outline-none"
                 onChange={(e) => {
                   setTextData(e.target.value);
+                  handleTyping(selectedUser?._id);
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && text) {
