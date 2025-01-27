@@ -60,7 +60,7 @@ const SettingPage = () => {
             onClick={() => {
               changeBg(clr);
             }}
-          >{clr}</div>
+          ></div>
         ))}
       </div>
     </div>

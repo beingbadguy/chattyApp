@@ -19,6 +19,25 @@ export const useAuthStore = create((set, get) => ({
   isProfileUpdating: false,
   isUserTyping: false,
   typingTimeout: null,
+  userThatReceivedMessage: [],
+  setUserMessages: (user) => {
+    const { userThatReceivedMessage } = get();
+    if (!userThatReceivedMessage.includes(user)) {
+      set({ userThatReceivedMessage: [...userThatReceivedMessage, user] });
+    }
+  },
+  usersThatAreTyping: [],
+  setUserTyping: (user) => {
+    const { usersThatAreTyping } = get();
+    if (!usersThatAreTyping.includes(user)) {
+      set({ usersThatAreTyping: [...usersThatAreTyping, user] });
+    }
+  },
+
+  stopUserTyping: (user) => {
+    const { usersThatAreTyping } = get();
+    set({ usersThatAreTyping: usersThatAreTyping.filter((u) => u !== user) });
+  },
 
   bgcolor: localStorage.getItem("bgcolor") || "#2dc653", // Initialize with saved color or default
   changeBg: (color) => {
@@ -137,17 +156,18 @@ export const useAuthStore = create((set, get) => ({
   },
 
   subscribeToMessage: () => {
-    const { selectedUser, socket, authUser, isUserTyping } = get();
+    const { selectedUser, socket, authUser, isUserTyping, setUserMessages } =
+      get();
 
     if (!socket) {
       console.error("Socket instance is not initialized.");
       return;
     }
 
-    if (!selectedUser) {
-      console.log("No user selected.");
-      return;
-    }
+    // if (!selectedUser) {
+    //   console.log("No user selected.");
+    //   return;
+    // }
 
     // Clean up any existing listener to avoid duplicates
     socket.off("newMessage");
@@ -155,6 +175,7 @@ export const useAuthStore = create((set, get) => ({
     const handleNewMessage = (newMessage) => {
       // console.log("Received newMessage:", newMessage);
       // Update the typing status
+      setUserMessages(newMessage.senderId);
 
       // Check if the new message is relevant
       const isMessageRelevant =

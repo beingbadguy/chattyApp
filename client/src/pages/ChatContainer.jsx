@@ -6,6 +6,8 @@ import { formatDistanceToNowStrict } from "date-fns";
 import { TiMessageTyping } from "react-icons/ti";
 import { GiCaterpillar } from "react-icons/gi";
 import { LuMessageCircleDashed } from "react-icons/lu";
+import userImage from "../../public/user.png";
+
 const ChatContainer = () => {
   const chatContainerRef = useRef(null);
   const {
@@ -23,6 +25,8 @@ const ChatContainer = () => {
     handleTyping,
     socket,
     setIsUserTyping,
+    setUserTyping,
+    stopUserTyping,
   } = useAuthStore();
 
   const [text, setTextData] = useState("");
@@ -39,25 +43,27 @@ const ChatContainer = () => {
 
   useEffect(() => {
     // Check for socket and selectedUser availability
-    if (!socket || !selectedUser) {
-      console.log("Socket is not initialized or selected user is not set");
+    if (!socket) {
+      // console.log("Socket is not initialized or selected user is not set");
       return;
     }
 
-    console.log("Socket is initialized in chatContainer");
+    // console.log("Socket is initialized in chatContainer");
 
     // Add socket event listeners
     socket.on("typing", (senderId) => {
       // console.log(senderId);
+      setUserTyping(senderId);
       // console.log(`${senderId} is typing`);
-      if (senderId === selectedUser._id) {
+      if (senderId === selectedUser?._id) {
         setIsUserTyping(true); // Update state only for the selected user
       }
     });
 
     socket.on("stopTyping", (senderId) => {
       // console.log(`${senderId} stopped typing`);
-      if (senderId === selectedUser._id) {
+      stopUserTyping(senderId);
+      if (senderId === selectedUser?._id) {
         setIsUserTyping(false); // Update state only for the selected user
       }
     });
@@ -93,10 +99,7 @@ const ChatContainer = () => {
               />
               <div className="relative">
                 <img
-                  src={
-                    selectedUser?.profilePic ||
-                    "https://img.icons8.com/?size=100&id=7820&format=png&color=000000"
-                  }
+                  src={selectedUser?.profilePic || userImage}
                   alt="logo"
                   className="size-10 object-cover border border-black  rounded-full relative"
                 />
@@ -114,7 +117,7 @@ const ChatContainer = () => {
             <div
               id="chatContainer"
               ref={chatContainerRef}
-              className="min-h-[500px] max-h-[600px]    md:min-h-[490px] lg:min-h-[500px] lg:h-[570px] overflow-y-scroll relative "
+              className="min-h-[500px] max-h-[560px]    md:min-h-[490px] lg:min-h-[500px] lg:h-[570px] overflow-y-scroll relative "
             >
               {message?.length > 0 ? (
                 message.map((msg) => (
@@ -149,12 +152,8 @@ const ChatContainer = () => {
                         <img
                           src={
                             msg.senderId === authUser?._id
-                              ? authUser?.profilePic ||
-                                "https://img.icons8.com/?size=100&id=7820&format=png&color=000000"
-                              : `${
-                                  selectedUser?.profilePic ||
-                                  "https://img.icons8.com/?size=100&id=7820&format=png&color=000000"
-                                } `
+                              ? authUser?.profilePic || userImage
+                              : `${selectedUser?.profilePic || userImage} `
                           }
                           alt=""
                           className="object-cover border border-black size-10 rounded-full"
