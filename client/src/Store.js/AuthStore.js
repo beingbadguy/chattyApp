@@ -16,6 +16,7 @@ export const useAuthStore = create((set, get) => ({
   allUsers: [],
   selectedUser: null,
   message: [],
+  isMediaSending: false,
   isProfileUpdating: false,
   isUserTyping: false,
   typingTimeout: null,
@@ -131,18 +132,34 @@ export const useAuthStore = create((set, get) => ({
     set({ selectedUser: user });
     get().subscribeToMessage();
   },
-  sendMessage: async (text) => {
+  sendMessage: async (text, media) => {
     const { selectedUser, message } = get();
     try {
+      const formData = new FormData();
+      formData.append("media", media);
+      formData.append("text", text);
+      if (media || (media && text)) {
+        set({ isMediaSending: true });
+      }
       const res = await axiosInstance.post(
         `/api/message/send/${selectedUser._id}`,
-        { text }
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       // console.log(res.data);
+      if (media || (media && text)) {
+        set({ isMediaSending: false });
+      }
+
       set({ message: [...message, res.data] });
     } catch (error) {
       console.log(error.message);
       console.log(error?.response?.data);
+      set({ isMediaSending: false });
     }
   },
   getMessages: async (userId) => {

@@ -1,5 +1,6 @@
 import { getReceiverSocketId, io } from "../config/socket.js";
 import Message from "../models/message.model.js";
+import cloudinary from "cloudinary";
 
 export const getMessages = async (req, res) => {
   try {
@@ -28,23 +29,48 @@ export const getMessages = async (req, res) => {
 };
 
 export const sendMessage = async (req, res) => {
+  const uploadMedia = req.files?.media || null;
+  const text = req.body.text;
+
   try {
-    console.log(req.body);
-    const { text } = req.body;
     const receiverId = req.params.id;
     const senderId = req.user._id;
-    if (!text) {
-      return res.status(400).json({
-        success: false,
-        message: "Message is Required",
+
+    let mediaFile;
+    if (uploadMedia) {
+      mediaFile = await cloudinary.v2.uploader.upload(
+        uploadMedia.tempFilePath,
+        {
+          folder: "chatty-media-pictures",
+        }
+      );
+    }
+    let newMessage;
+    if (uploadMedia && !text) {
+      newMessage = new Message({
+        senderId: senderId,
+        receiverId: receiverId,
+        media: mediaFile.secure_url,
       });
     }
 
-    const newMessage = new Message({
-      senderId: senderId,
-      receiverId: receiverId,
-      text: text,
-    });
+    if (uploadMedia && text) {
+      newMessage = new Message({
+        senderId: senderId,
+        receiverId: receiverId,
+        text: text,
+        media: mediaFile.secure_url,
+      });
+    }
+
+    if (text && !uploadMedia) {
+      newMessage = new Message({
+        senderId: senderId,
+        receiverId: receiverId,
+        text: text,
+      });
+    }
+
     await newMessage.save();
 
     // todo: realtime message functionality
