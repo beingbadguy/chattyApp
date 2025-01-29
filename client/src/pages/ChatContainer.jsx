@@ -108,7 +108,7 @@ const ChatContainer = () => {
         <div className="relative bg-gray-100 mx-10 rounded flex items-center justify-center">
           <img src={photo} alt="" className="h-[400px] w-full rounded" />
           <p
-            className={`absolute bg-[${bgcolor}] p-2 rounded-full size-8 flex items-center justify-center text-white -top-1 -right-2`}
+            className={`absolute bg-[${bgcolor}] p-2 rounded-full size-8 flex items-center justify-center text-white -top-1 -right-2 cursor-pointer`}
             onClick={() => {
               setPhoto(null);
             }}
@@ -199,7 +199,7 @@ const ChatContainer = () => {
                               <img
                                 src={msg.media}
                                 alt=""
-                                className="size-20"
+                                className="size-20 cursor-pointer rounded mb-3 object-cover"
                                 onClick={() => {
                                   setPhoto(msg.media);
                                 }}
@@ -279,6 +279,7 @@ const ChatContainer = () => {
                   type="file"
                   name=""
                   id=""
+                  accept="image/*"
                   className="w-5 absolute z-0 opacity-0 cursor-pointer"
                   onChange={(e) => {
                     if (media) {
