@@ -67,7 +67,7 @@ const UserPage = () => {
     <div>
       <div className="flex items-start">
         <div
-          className={` bg-gray-100 h-screen md:h-[700px] ${
+          className={` bg-gray-100 ${
             selectedUser != null ? "hidden md:flex" : "w-full"
           } md:w-[30%] lg:w-[20%] flex flex-col `}
         >
@@ -75,9 +75,10 @@ const UserPage = () => {
             Users to chat <RiMessage3Fill />
           </div>
           <div
-            className={`${
+            id="users"
+            className={`users ${
               selectedUser != null ? "hidden md:block" : "w-full"
-            } mt-1`}
+            } mt-1 h-[700px] overflow-y-scroll`}
           >
             {allUsers &&
               allUsers.map((user) => (

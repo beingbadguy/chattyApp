@@ -121,7 +121,7 @@ const ChatContainer = () => {
   }
   return (
     <div>
-      <div className=" w-full h-screen">
+      <div className=" w-full h-screen  ">
         {selectedUser ? (
           <div>
             <div className="flex items-center gap-2 px-4 bg-gray-200 p-2 cursor-pointer">
